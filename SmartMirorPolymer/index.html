@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/main.css">
+        <link href='https://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
+        <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+        <link rel="import" href="elements/mirror-weather.html">
+        <link rel="import" href="elements/mirror-date.html">
+    </head>
+    <body>
+        <div id="left-top">
+            <mirror-weather cycle=""></mirror-weather>
+        </div>
+        <div id="right-top">
+            <mirror-date currentDate=""></mirror-date>
+        </div>
+        <script type="application/javascript">
+            var lastWeatherUpdate = 0;
+            var datePolyElement = document.querySelector('mirror-date');
+            var weatherPolyElement = document.querySelector('mirror-weather');
+            (function() {
+                setInterval(updateData,60000);
+            })();
+            
+            function updateData() {
+                lastWeatherUpdate = lastWeatherUpdate +1;
+                if(lastWeatherUpdate > 5) {
+                    lastWeatherUpdate = 0;
+                    weatherPolyElement.cycle = lastWeatherUpdate;
+                    console.log("weatherUpadte");
+                }
+                datePolyElement.currentDate = new Date();
+            }
+        </script>
+    </body>
+</html>

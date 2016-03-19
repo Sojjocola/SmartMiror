@@ -1,0 +1,99 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="mirror-weather">
+    <style>
+        .temperature {
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 116px;
+            display: inline-block;
+            margin-bottom: 0px;
+        }
+        .picture {
+            display: inline-block;
+        }
+        .description {
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            font-style: normal;
+            font-size: 36px;
+        }
+    </style>
+    <template>
+        <iron-ajax
+            id="weatherRequest"
+            url="http://api.wunderground.com/api/<yourapikey>/conditions/lang:FR/q/France/Nantes.json"
+            handle-as="json"
+            on-response="handleResponse"
+            last-response="{{weatherdata}}"></iron-ajax>
+        
+            <div class="temperature">{{Temperature}}<span>°</span></div>
+            <img class="picture" src="{{ImageSource}}"/>
+            <div class="description">{{Weather}}</div>
+        
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "mirror-weather",
+        properties : {
+            cycle : {
+                type: String,
+                observer : '_weatherUpdated'
+            }
+        },
+        ready : function() {
+            this._weatherUpdated();
+        },
+        handleResponse: function ()
+        {
+            console.log(this.weatherdata);
+            this.Temperature = this.weatherdata.current_observation.temp_c.toString();
+            this.Weather = this.weatherdata.current_observation.weather;
+            switch (this.weatherdata.current_observation.icon) {
+                case "mostlycloudy":
+                    this.ImageSource = "./images/Cloudy.png";
+                    break;
+                case "clear":
+                    this.ImageSource = "./images/Clear.png";
+                    break;
+                case "cloudy":
+                    this.ImageSource = "./images/Cloudy.png";
+                    break;
+                case "mostlycloudy":
+                    this.ImageSource = "./images/PartialyCloudy.png";
+                    break;
+                case "mostlysunny":
+                    this.ImageSource = "./images/PartialyCloudy.png";
+                    break;
+                case "partlysunny":
+                    this.ImageSource = "./images/PartialyCloudy.png";
+                    break;
+                case "rain":
+                    this.ImageSource = "./images/Rainny.png";
+                    break;
+                case "snow":
+                    this.ImageSource = "./images/Snowy.png";
+                    break;
+                case "sunny":
+                    this.ImageSource = "./images/Sunny.png";
+                    break;
+                case "partlycloudy":
+                    this.ImageSource = "./images/PartialyCloudy.png";
+                    break;
+                default:
+                    this.ImageSource = "./images/Thunder.png";
+                    break;
+            } 
+        },
+        _weatherUpdated : function() {
+            this.$.weatherRequest.generateRequest();
+        }
+    });
+
+
+</script>

@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<dom-module id="mirror-date">
+    <style>
+        .hour {
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 116px;
+        }
+        .date {
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            font-size: 48px;
+            margin: 0;
+            text-align: right;
+        }
+    </style>
+    <template>
+        <div class="hour"><span>{{Hour}}</span>:<span>{{Minutes}}</span></div>
+        <div class="date">{{WeekDay}}</div>
+        <div class="date"><span>{{Day}}</span> <span>{{Month}}</span></div>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "mirror-date",
+        properties : {
+            currentDate : {
+                type: Date,
+                observer : '_updatedDate'
+            }
+        },
+        ready: function() {
+            this.currentDate = new Date();
+            this._updatedDate();
+        },
+        _updatedDate: function() {
+            
+            var weekday = new Array(7);
+            weekday[0] =  "Dimanche";
+            weekday[1] = "Lundi";
+            weekday[2] = "Mardi";
+            weekday[3] = "Mercredi";
+            weekday[4] = "Jeudi";
+            weekday[5] = "Vendredi";
+            weekday[6] = "Samedi";
+            
+            var monthLabel = new Array(12);
+            monthLabel[0] = "Janvier";
+            monthLabel[1] = "Février";
+            monthLabel[2] = "Mars";
+            monthLabel[3] = "Avril";
+            monthLabel[4] = "Mai";
+            monthLabel[5] = "Juin";
+            monthLabel[6] = "Juillet";
+            monthLabel[7] = "Août";
+            monthLabel[8] = "Septembre";
+            monthLabel[9] = "Octobre";
+            monthLabel[10] = "Novembre";
+            monthLabel[11] = "Décembre";
+            
+            var today = this.currentDate;
+            this.Hour = today.getHours() < 10 ? '0' + today.getHours() : today.getHours();
+            this.Minutes = today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
+            this.WeekDay = weekday[today.getDay()];
+            this.Day = today.getDate();
+            this.Month = monthLabel[today.getMonth()];
+        }  
+    });
+
+
+</script>

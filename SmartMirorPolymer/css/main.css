@@ -1,0 +1,21 @@
+body {
+    background-color: black;
+    color: blue;
+}
+
+#left-top {
+    margin: 10px;
+    position: absolute;
+    left:10px;
+}
+
+#right-top {
+    margin: 10px;
+    position: absolute;
+    right:10px;
+}
+
+mirror-weather {
+    height: 200px;
+    width: 200px;
+}

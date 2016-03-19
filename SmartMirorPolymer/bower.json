@@ -1,0 +1,25 @@
+{
+  "name": "mirror",
+  "version": "0.0.0",
+  "authors": [
+    "François Chevalier <fchevalier12@gmail.com>"
+  ],
+  "description": "smart mirror application",
+  "main": "index.html",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1"
+  }
+}
