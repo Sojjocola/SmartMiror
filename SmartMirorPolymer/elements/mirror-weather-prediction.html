@@ -1,0 +1,158 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="mirror-weather-prediction">
+<style>
+    .ul-weather-prediction{
+      padding: 0
+    }
+    .li-weather-prediction {
+      margin-left: 10px;
+      display: inline-block;
+    }
+    .temperature-prediction {
+        color: white;
+        font-family: 'Quicksand', sans-serif;
+        font-weight: 300;
+        font-style: normal;
+        font-size: 24px;
+
+        margin-bottom: 0px;
+    }
+    .picture-prediction {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        height: 28px;
+        width: 28px;
+    }
+    .time-prediction {
+        color: white;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 100;
+        font-style: normal;
+        font-size: 24px;
+
+    }
+</style>
+<template>
+    <iron-ajax
+        id="weatherPredictionRequest"
+        url="http://api.wunderground.com/api/6c656a562551fccc/hourly/lang:FR/q/France/Nantes.json"
+        handle-as="json"
+        on-response="handleResponse"
+        last-response="{{weatherpredictiondata}}"></iron-ajax>
+
+        <ul class="ul-weather-prediction">
+          <li class="li-weather-prediction">
+            <div class="time-prediction">{{firstHour}}<span>h</span></div>
+            <img class="picture-prediction" src="{{firstHourImageSource}}"/>
+            <div class="temperature-prediction">{{firstHourTemperature}}<span>°</span></div>
+          </li>
+          <li class="li-weather-prediction">
+            <div class="time-prediction">{{secondHour}}<span>h</span></div>
+            <img class="picture-prediction" src="{{secondHourImageSource}}"/>
+            <div class="temperature-prediction">{{secondHourTemperature}}<span>°</span></div>
+          </li>
+          <li class="li-weather-prediction">
+            <div class="time-prediction">{{thirdHour}}<span>h</span></div>
+            <img class="picture-prediction" src="{{thirdHourImageSource}}"/>
+            <div class="temperature-prediction">{{thirdHourTemperature}}<span>°</span></div>
+          </li>
+          <li class="li-weather-prediction">
+            <div class="time-prediction">{{fourthHour}}<span>h</span></div>
+            <img class="picture-prediction" src="{{fourthHourImageSource}}"/>
+            <div class="temperature-prediction">{{fourthHourTemperature}}<span>°</span></div>
+          </li>
+          <li class="li-weather-prediction">
+            <div class="time-prediction">{{fiveHour}}<span>h</span></div>
+            <img class="picture-prediction" src="{{fiveHourImageSource}}"/>
+            <div class="temperature-prediction">{{fiveHourTemperature}}<span>°</span></div>
+          </li>
+        </ul>
+
+
+</template>
+</dom-module>
+<script>
+    Polymer({
+        is: "mirror-weather-prediction",
+        properties : {
+            cycle : {
+                type: String,
+                observer : '_weatherPredictionUpdated'
+            }
+        },
+        ready : function() {
+            this._weatherPredictionUpdated();
+        },
+        handleResponse: function ()
+        {
+            console.log("weatherPredictionUpadted");
+            this.firstHour = this.weatherpredictiondata.hourly_forecast[0].FCTTIME.hour;
+            this.firstHourTemperature = this.weatherpredictiondata.hourly_forecast[0].temp.metric;
+            this.firstHourImageSource =  this.weatherpredictiondata.hourly_forecast[0].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[0].icon);
+
+            this.secondHour = this.weatherpredictiondata.hourly_forecast[1].FCTTIME.hour;
+            this.secondHourTemperature = this.weatherpredictiondata.hourly_forecast[1].temp.metric;
+            this.secondHourImageSource =  this.weatherpredictiondata.hourly_forecast[1].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[1].icon);
+
+            this.thirdHour = this.weatherpredictiondata.hourly_forecast[2].FCTTIME.hour;
+            this.thirdHourTemperature = this.weatherpredictiondata.hourly_forecast[2].temp.metric;
+            this.thirdHourImageSource =  this.weatherpredictiondata.hourly_forecast[2].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[2].icon);
+
+            this.fourthHour = this.weatherpredictiondata.hourly_forecast[3].FCTTIME.hour;
+            this.fourthHourTemperature = this.weatherpredictiondata.hourly_forecast[3].temp.metric;
+            this.fourthHourImageSource =  this.weatherpredictiondata.hourly_forecast[3].icon_url//getRefIcon(this.weatherpredictiondata.hourly_forecast[3].icon);
+
+            this.fiveHour = this.weatherpredictiondata.hourly_forecast[4].FCTTIME.hour;
+            this.fiveHourTemperature = this.weatherpredictiondata.hourly_forecast[4].temp.metric;
+            this.fiveHourImageSource =  this.weatherpredictiondata.hourly_forecast[4].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[4].icon);
+
+        },
+        _weatherPredictionUpdated : function() {
+            this.$.weatherPredictionRequest.generateRequest();
+        }
+    });
+
+    var getRefIcon = function (icon) {
+      var result = "";
+
+      switch (icon) {
+          case "mostlycloudy":
+              result = "./images/Cloudy.png";
+              break;
+          case "clear":
+              result = "./images/Sunny.png";
+              break;
+          case "cloudy":
+              result = "./images/Cloudy.png";
+              break;
+          case "mostlycloudy":
+              result = "./images/PartialyCloudy.png";
+              break;
+          case "mostlysunny":
+              result = "./images/PartialyCloudy.png";
+              break;
+          case "partlysunny":
+              result = "./images/PartialyCloudy.png";
+              break;
+          case "rain":
+              result = "./images/Rainny.png";
+              break;
+          case "snow":
+              result = "./images/Snowy.png";
+              break;
+          case "sunny":
+              result = "./images/Sunny.png";
+              break;
+          case "partlycloudy":
+              result = "./images/PartialyCloudy.png";
+              break;
+          default:
+              result = "./images/Thunder.png";
+              break;
+      }
+
+      return result;
+    };
+
+</script>
