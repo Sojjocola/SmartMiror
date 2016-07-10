@@ -7,10 +7,12 @@
         <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
         <link rel="import" href="elements/mirror-weather.html">
         <link rel="import" href="elements/mirror-date.html">
+        <link rel="import" href="elements/mirror-weather-prediction.html">
     </head>
     <body>
         <div id="left-top">
             <mirror-weather cycle=""></mirror-weather>
+            <mirror-weather-prediction cycle=""></mirror-weather-prediction>
         </div>
         <div id="right-top">
             <mirror-date currentDate=""></mirror-date>
@@ -19,15 +21,17 @@
             var lastWeatherUpdate = 0;
             var datePolyElement = document.querySelector('mirror-date');
             var weatherPolyElement = document.querySelector('mirror-weather');
+            var weatherPredictionPolyElement = document.querySelector('mirror-weather-prediction');
             (function() {
-                setInterval(updateData,60000);
+                setInterval(updateData,1000);
             })();
-            
+
             function updateData() {
                 lastWeatherUpdate = lastWeatherUpdate +1;
-                if(lastWeatherUpdate > 5) {
+                if(lastWeatherUpdate > 300) {
                     lastWeatherUpdate = 0;
-                    weatherPolyElement.cycle = lastWeatherUpdate;
+                    weatherPolyElement.cycle = new Date();
+                    weatherPredictionPolyElement.cycle = new Date();
                     console.log("weatherUpadte");
                 }
                 datePolyElement.currentDate = new Date();
