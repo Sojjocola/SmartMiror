@@ -8,6 +8,7 @@
         <link rel="import" href="elements/mirror-weather.html">
         <link rel="import" href="elements/mirror-date.html">
         <link rel="import" href="elements/mirror-weather-prediction.html">
+        <title>SmartMirror</title>
     </head>
     <body>
         <div id="left-top">
@@ -23,16 +24,17 @@
             var weatherPolyElement = document.querySelector('mirror-weather');
             var weatherPredictionPolyElement = document.querySelector('mirror-weather-prediction');
             (function() {
-                setInterval(updateData,1000);
+                setInterval(updateData,5000);
             })();
 
             function updateData() {
+
                 lastWeatherUpdate = lastWeatherUpdate +1;
-                if(lastWeatherUpdate > 300) {
+                if(lastWeatherUpdate > 60) {
                     lastWeatherUpdate = 0;
                     weatherPolyElement.cycle = new Date();
                     weatherPredictionPolyElement.cycle = new Date();
-                    console.log("weatherUpadte");
+                    //console.log("weatherUpadte");
                 }
                 datePolyElement.currentDate = new Date();
             }

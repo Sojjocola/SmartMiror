@@ -86,26 +86,26 @@
         },
         handleResponse: function ()
         {
-            console.log("weatherPredictionUpadted");
+            //console.log("weatherPredictionUpadted");
             this.firstHour = this.weatherpredictiondata.hourly_forecast[0].FCTTIME.hour;
             this.firstHourTemperature = this.weatherpredictiondata.hourly_forecast[0].temp.metric;
-            this.firstHourImageSource =  this.weatherpredictiondata.hourly_forecast[0].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[0].icon);
+            this.firstHourImageSource =  getRefIcon(this.weatherpredictiondata.hourly_forecast[0].icon,this.weatherpredictiondata.hourly_forecast[0].icon_url);
 
             this.secondHour = this.weatherpredictiondata.hourly_forecast[1].FCTTIME.hour;
             this.secondHourTemperature = this.weatherpredictiondata.hourly_forecast[1].temp.metric;
-            this.secondHourImageSource =  this.weatherpredictiondata.hourly_forecast[1].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[1].icon);
+            this.secondHourImageSource =  getRefIcon(this.weatherpredictiondata.hourly_forecast[1].icon,this.weatherpredictiondata.hourly_forecast[1].icon_url);
 
             this.thirdHour = this.weatherpredictiondata.hourly_forecast[2].FCTTIME.hour;
             this.thirdHourTemperature = this.weatherpredictiondata.hourly_forecast[2].temp.metric;
-            this.thirdHourImageSource =  this.weatherpredictiondata.hourly_forecast[2].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[2].icon);
+            this.thirdHourImageSource =  getRefIcon(this.weatherpredictiondata.hourly_forecast[2].icon,this.weatherpredictiondata.hourly_forecast[2].icon_url);
 
             this.fourthHour = this.weatherpredictiondata.hourly_forecast[3].FCTTIME.hour;
             this.fourthHourTemperature = this.weatherpredictiondata.hourly_forecast[3].temp.metric;
-            this.fourthHourImageSource =  this.weatherpredictiondata.hourly_forecast[3].icon_url//getRefIcon(this.weatherpredictiondata.hourly_forecast[3].icon);
+            this.fourthHourImageSource =  getRefIcon(this.weatherpredictiondata.hourly_forecast[3].icon,this.weatherpredictiondata.hourly_forecast[3].icon_url);
 
             this.fiveHour = this.weatherpredictiondata.hourly_forecast[4].FCTTIME.hour;
             this.fiveHourTemperature = this.weatherpredictiondata.hourly_forecast[4].temp.metric;
-            this.fiveHourImageSource =  this.weatherpredictiondata.hourly_forecast[4].icon_url;//getRefIcon(this.weatherpredictiondata.hourly_forecast[4].icon);
+            this.fiveHourImageSource =  getRefIcon(this.weatherpredictiondata.hourly_forecast[4].icon,this.weatherpredictiondata.hourly_forecast[4].icon_url);
 
         },
         _weatherPredictionUpdated : function() {
@@ -113,27 +113,31 @@
         }
     });
 
-    var getRefIcon = function (icon) {
+    var getRefIcon = function (icon,iconurl) {
       var result = "";
+      var nightMode = false;
+      if(iconurl.indexOf("nt_") > -1){
+          nightMode = true;
+      }
 
       switch (icon) {
           case "mostlycloudy":
               result = "./images/Cloudy.png";
               break;
           case "clear":
-              result = "./images/Sunny.png";
+             if(nightMode){result = "./images/Clear.png";}else{result = "./images/Sunny.png";}
               break;
           case "cloudy":
               result = "./images/Cloudy.png";
               break;
           case "mostlycloudy":
-              result = "./images/PartialyCloudy.png";
+               if(nightMode){ result = "./images/PartialyCloudyNight.png";}else{ result = "./images/PartialyCloudy.png";}
               break;
           case "mostlysunny":
-              result = "./images/PartialyCloudy.png";
+              if(nightMode){ result = "./images/PartialyCloudyNight.png";}else{ result = "./images/PartialyCloudy.png";}
               break;
           case "partlysunny":
-              result = "./images/PartialyCloudy.png";
+              if(nightMode){ result = "./images/PartialyCloudyNight.png";}else{ result = "./images/PartialyCloudy.png";}
               break;
           case "rain":
               result = "./images/Rainny.png";
@@ -145,7 +149,7 @@
               result = "./images/Sunny.png";
               break;
           case "partlycloudy":
-              result = "./images/PartialyCloudy.png";
+              if(nightMode){ result = "./images/PartialyCloudyNight.png";}else{ result = "./images/PartialyCloudy.png";}
               break;
           default:
               result = "./images/Thunder.png";
