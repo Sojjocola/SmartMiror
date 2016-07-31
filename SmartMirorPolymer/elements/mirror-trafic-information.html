@@ -1,0 +1,108 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<script src="../js/jquery-3.1.0.min.js"></script>
+<dom-module id="mirror-trafic-information">
+    <style>
+
+        .ul-trafic{
+            padding: 0;
+            list-style-type : none;
+            margin-top : 15px;
+        }
+        .li-trafic {
+            color: white;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            font-style: normal;
+            font-size: 32px;
+            margin-left:45px;
+            margin-top : 5px;
+        }
+        .trafic-title {
+            margin-top : 55px;
+        }
+        .link {
+             color: white;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            font-style: normal;
+            font-size: 34px;
+            margin-left: 15px;
+            margin-right : 15px;
+        }
+       .trafic-picture {
+           height: 36px;
+           width: 42px;
+       }
+       .chrono-picture{
+           height: 36px;
+           width: 36px;
+       }
+       .waypoint-picture {
+           height: 36px;
+           width: 26px;
+           margin-right : 15px;
+       }
+       .separator{
+           margin-left : 10px;
+           margin-right : 10px;
+       }
+
+    </style>
+    <template>
+        <iron-ajax id="traficRequest" url=""
+            handle-as="json" on-response="handleResponse" last-response="{{traficDataResponse}}"></iron-ajax>
+
+            <div class="trafic-title" hidden$={{!TraficToShow}}>
+                <img class="trafic-picture" src="{{TraficImageSource}}" /><span class="link">Temps de trajet</span><!--<img class="chrono-picture" src="{{ChronoImageSource}}" />-->
+           </div>
+           <ul class="ul-trafic">
+               <template is="dom-repeat" items="{{TraficInformations}}">
+                     <li class="li-trafic"><img class="waypoint-picture" src="{{WaypointImageSource}}" />{{item.DirectionName}}<span class="separator">:</span><span class="TimeInTrafic">{{item.TimeInTrafic}}</span></li>
+               </template>
+           </ul>
+        </template>
+    </template>
+</dom-module>
+<script>
+    Polymer({
+        is: "mirror-trafic-information",
+        properties : {
+            traficData : {
+                type: Array,
+                observer : '_updatedTraficInfo',
+                notify : true
+            }
+        },
+        ready: function() {
+            this._updatedTraficInfo();
+            var $ =jQuery.noConflict()
+            var indexDataPushed = 0;
+
+        },
+        _updatedTraficInfo: function() {
+             this.WaypointImageSource = "./images/Waypoint.png";
+             this.TraficImageSource = "./images/TraficCar.png";
+             this.ChronoImageSource = "./images/Chrono.png";
+            if(typeof this.traficData !== 'undefined' && this.traficData.length > 0){
+                 this.TraficToShow = true;
+                 this.TraficInformations = [];
+                 indexDataPushed = 0;
+                 this.$.traficRequest.url = encodeURI(this.traficData[0].urlGoogleApi);
+                 this.$.traficRequest.generateRequest();
+            } else {
+                 this.TraficInformations = [];
+                 this.TraficToShow = false;
+            }
+        },
+         handleResponse: function ()
+        {
+            this.push('TraficInformations',{DirectionName:this.traficData[indexDataPushed].name,TimeInTrafic:this.traficDataResponse.routes[0].legs[0].duration_in_traffic.text });
+            indexDataPushed = indexDataPushed + 1;
+            if(typeof this.traficData !== 'undefined' && this.traficData.length > 1 && indexDataPushed < this.traficData.length){
+                this.$.traficRequest.url = encodeURI(this.traficData[indexDataPushed].urlGoogleApi);
+                this.$.traficRequest.generateRequest();
+            }
+        }
+    });
+</script>

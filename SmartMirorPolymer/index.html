@@ -5,24 +5,30 @@
         <link href='https://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Quicksand:300' rel='stylesheet' type='text/css'>
         <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+        <script src="js/jquery-3.1.0.min.js"></script>
+        <script src="js/traficInfo.js"></script>
         <link rel="import" href="elements/mirror-weather.html">
         <link rel="import" href="elements/mirror-date.html">
         <link rel="import" href="elements/mirror-weather-prediction.html">
+        <link rel="import" href="elements/mirror-trafic-information.html">
         <title>SmartMirror</title>
     </head>
     <body>
         <div id="left-top">
             <mirror-weather cycle=""></mirror-weather>
             <mirror-weather-prediction cycle=""></mirror-weather-prediction>
+            <mirror-trafic-information traficData=""></mirror-trafic-information>
         </div>
         <div id="right-top">
             <mirror-date currentDate=""></mirror-date>
         </div>
         <script type="application/javascript">
             var lastWeatherUpdate = 0;
+            var lastTraficInfoUpdate = 0;
             var datePolyElement = document.querySelector('mirror-date');
             var weatherPolyElement = document.querySelector('mirror-weather');
             var weatherPredictionPolyElement = document.querySelector('mirror-weather-prediction');
+            var traficInformationPolyElement = document.querySelector('mirror-trafic-information');
             (function() {
                 setInterval(updateData,5000);
             })();
@@ -30,13 +36,27 @@
             function updateData() {
 
                 lastWeatherUpdate = lastWeatherUpdate +1;
+                lastTraficInfoUpdate = lastTraficInfoUpdate +1;
                 if(lastWeatherUpdate > 60) {
                     lastWeatherUpdate = 0;
                     weatherPolyElement.cycle = new Date();
                     weatherPredictionPolyElement.cycle = new Date();
-                    //console.log("weatherUpadte");
                 }
                 datePolyElement.currentDate = new Date();
+                if(lastTraficInfoUpdate > 40) {
+                    lastTraficInfoUpdate = 0;
+                    var traficDataLines = [];
+                    var jqxhr = jQuery.getJSON("jsondata/traficconfig.json", function (data) {
+                        jQuery.each(data.configs,function(index,config){
+                            if(checkIsNeededToDisplay(config.dayOfWeek,config.startTime,config.endTime)) {
+                                    traficDataLines.push(config);
+                            }
+                        });
+                        traficInformationPolyElement.traficData = traficDataLines;
+                    });
+
+
+                }
             }
         </script>
     </body>

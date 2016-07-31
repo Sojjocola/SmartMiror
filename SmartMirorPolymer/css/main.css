@@ -19,3 +19,7 @@ mirror-weather {
     height: 200px;
     width: 200px;
 }
+
+mirror-trafic-information {
+    margin-top : 35px;
+}

@@ -1,0 +1,6 @@
+{
+    "configs":[
+        {"dayOfWeek":"1,4","startTime":"07:00:00","endTime":"08:15:00","name":"Saint Malo", "urlGoogleApi":"https://maps.googleapis.com/maps/api/directions/json?origin=Hôtel+de+Ville,+2+Rue+de+l'Hôtel+de+Ville,+44200+Nantes&destination=Saint-Malo&departure_time=now&key=your-google-api-key"},
+        {"dayOfWeek":"6,0","startTime":"09:00:00","endTime":"14:30:00","name":"Mont Saint Michel", "urlGoogleApi":"https://maps.googleapis.com/maps/api/directions/json?origin=Hôtel+de+Ville,+2+Rue+de+l'Hôtel+de+Ville,+44200+Nantes&destination=Mont+Saint-Michel,+Le+Mont-Saint-Michel&departure_time=now&key=your-google-api-key"},
+    ]
+}
